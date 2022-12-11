@@ -5,7 +5,7 @@ name: Build and push Docker image
 on:
   push:
     branches:
-      - feat/cicd
+      - master
 
 # Defines a set of jobs that can run concurrently
 jobs:
@@ -22,15 +22,15 @@ jobs:
       - name: Update Version and tag
         run: ./scripts/update_version.sh
       
-      # - name: Update git
-      #   uses: test-room-7/action-update-file@v1
-      #   with:
-      #     file-path: |
-      #       version.txt
-      #       helm/hello-python/values.yaml
-      #     commit-msg: Update version and helm
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     branch: feat/cicd
+      - name: Update git
+        uses: test-room-7/action-update-file@v1
+        with:
+          file-path: |
+            version.txt
+            helm/hello-python/values.yaml
+          commit-msg: Update version and helm
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master
 
       - name: Set image tag
         run: |
