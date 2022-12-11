@@ -8,7 +8,7 @@ values:
   # Image repository and tag
   image:
     repository: ghcr.io/confusb/hello-python
-    tag: 1
+    tag: 2
   # Container port
   port: 80
   # Service type
