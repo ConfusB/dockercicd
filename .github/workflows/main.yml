@@ -1,0 +1,35 @@
+# This is a YAML-formatted workflow file
+name: Build and push Docker image
+
+# Triggers the workflow on push events to the master branch
+on:
+  push:
+    branches:
+      - main
+
+# Defines a set of jobs that can run concurrently
+jobs:
+  # Defines a job called "build"
+  build:
+    # Runs the job on a Ubuntu 20.04 virtual machine
+    runs-on: ubuntu-20.04
+
+    # Defines the steps in the job
+    steps:
+      # Checks out the repository code into the virtual machine
+      - uses: actions/checkout@v2
+
+      # Builds the Docker image using the Dockerfile in the repository
+      - name: Build Docker image
+        run: |
+          docker build . -t ghcr.io/confusb/hello-python:latest
+
+      # Logs in to the Docker Hub registry using the provided credentials
+      - name: Login to Docker Hub
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+
+      # Pushes the Docker image to the Docker Hub registry
+      - name: Push Docker image
+        run: |
+          docker push ghcr.io/confusb/hello-python:latest

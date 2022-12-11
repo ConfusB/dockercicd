@@ -1,0 +1,71 @@
+# Chart metadata
+name: hello-python
+version: 0.1.0
+
+# Chart dependencies
+dependencies: []
+
+# Chart values
+values:
+  # Image repository and tag
+  image:
+    repository: <IMAGE_NAME>
+    tag: <IMAGE_TAG>
+
+  # Container port
+  port: 80
+
+  # Service type
+  service:
+    type: ClusterIP
+
+# Chart templates
+templates:
+  # Deployment template
+  deployment.yaml:
+    # Deployment metadata
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: hello-python
+    # Deployment spec
+    spec:
+      # Number of replicas
+      replicas: 1
+      # Pod template
+      template:
+        # Pod metadata
+        metadata:
+          labels:
+            app: hello-python
+        # Pod spec
+        spec:
+          # Container spec
+          containers:
+            - name: mycontainer
+              # Container image
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              # Container port
+              ports:
+                - containerPort: {{ .Values.port }}
+
+# Service template
+service.yaml:
+  # Service metadata
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: hello-python-service
+  # Service spec
+  spec:
+    # Service type
+    type: {{ .Values.service.type }}
+        # Service selector
+    selector:
+      app: hello-python
+    # Service ports
+    ports:
+      - protocol: TCP
+        port: {{ .Values.port }}
+        targetPort: {{ .Values.port }}
+
