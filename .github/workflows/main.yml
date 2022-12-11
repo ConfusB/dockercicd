@@ -5,7 +5,7 @@ name: Build and push Docker image
 on:
   push:
     branches:
-      - main
+      - feat/cicd
 
 # Defines a set of jobs that can run concurrently
 jobs:
@@ -19,17 +19,14 @@ jobs:
       # Checks out the repository code into the virtual machine
       - uses: actions/checkout@v2
 
-      # Builds the Docker image using the Dockerfile in the repository
-      - name: Build Docker image
+      - name: Set image tag
         run: |
-          docker build . -t ghcr.io/confusb/hello-python:latest
-
-      # Logs in to the Docker Hub registry using the provided credentials
-      - name: Login to Docker Hub
-        run: |
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-
-      # Pushes the Docker image to the Docker Hub registry
-      - name: Push Docker image
-        run: |
-          docker push ghcr.io/confusb/hello-python:latest
+            echo "tag=$(cat ./version.txt)" >> $GITHUB_ENV
+      
+       # https://github.com/marketplace/actions/push-to-ghcr
+      - name: Build and publish a Docker image for ${{ github.repository }}
+        uses: macbre/push-to-ghcr@master
+        with:
+          image_name: ${{ github.repository }}  # it will be lowercased internally
+          image_tag: env.tag
+          github_token: ${{ secrets.GITHUB_TOKEN }}
