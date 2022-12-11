@@ -5,8 +5,8 @@ FROM python:3.8 as build
 WORKDIR /app
 
 # Copy the Python script and the requirements file into the working directory
-COPY ./script/hello.py . 
-COPY ./script/requirements.txt .
+COPY ./scripts/hello.py . 
+COPY ./scripts/requirements.txt .
 COPY version.txt .
 
 # Install any necessary dependencies for the script

@@ -23,7 +23,20 @@ jobs:
         run: |
             echo "tag=$(cat ./version.txt)" >> $GITHUB_ENV
       
-       # https://github.com/marketplace/actions/push-to-ghcr
+      - name: Update
+        run: ./scripts/fetch-resources.sh
+      
+      - name: Update resources
+        uses: test-room-7/action-update-file@v1
+        with:
+          file-path: |
+            ./version.txt
+            ./helm/helm.yml
+          commit-msg: Update version and helm
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          branch: feat/cicd
+      
+      # https://github.com/marketplace/actions/push-to-ghcr
       - name: Build and publish a Docker image for ${{ github.repository }}
         uses: macbre/push-to-ghcr@master
         with:
