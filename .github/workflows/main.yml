@@ -44,12 +44,3 @@ jobs:
           image_tag: ${{ env.tag }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: 'confusb/hello-python:${{ env.tag }}'
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
