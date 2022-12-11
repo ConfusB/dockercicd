@@ -1,8 +1,5 @@
 name: build
 on:
-  push:
-    branches:
-      - feat/cicd
   pull_request:
 
 jobs:
@@ -25,4 +22,3 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
-          

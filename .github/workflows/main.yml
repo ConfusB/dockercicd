@@ -5,7 +5,7 @@ name: Build and push Docker image
 on:
   push:
     branches:
-      - master
+      - main
 
 # Defines a set of jobs that can run concurrently
 jobs:
@@ -30,7 +30,7 @@ jobs:
             helm/hello-python/values.yaml
           commit-msg: Update version and helm
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          branch: master
+          branch: main
 
       - name: Set image tag
         run: |
