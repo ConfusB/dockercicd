@@ -22,20 +22,20 @@ jobs:
       - name: Update Version and tag
         run: ./scripts/update_version.sh
       
-      - name: Update git
-        uses: test-room-7/action-update-file@v1
-        with:
-          file-path: |
-            version.txt
-            helm/hello-python/values.yaml
-          commit-msg: Update version and helm
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          branch: feat/cicd
+      # - name: Update git
+      #   uses: test-room-7/action-update-file@v1
+      #   with:
+      #     file-path: |
+      #       version.txt
+      #       helm/hello-python/values.yaml
+      #     commit-msg: Update version and helm
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     branch: feat/cicd
 
       - name: Set image tag
         run: |
             echo "tag=$(cat ./version.txt)" >> $GITHUB_ENV
-      
+
       # https://github.com/marketplace/actions/push-to-ghcr
       - name: Build and publish a Docker image for ${{ github.repository }}
         uses: macbre/push-to-ghcr@master
@@ -43,3 +43,13 @@ jobs:
           image_name: confusb/hello-python # it will be lowercased internally
           image_tag: ${{ env.tag }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'confusb/hello-python:${{ env.tag }}'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
