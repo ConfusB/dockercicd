@@ -30,8 +30,8 @@ jobs:
         uses: test-room-7/action-update-file@v1
         with:
           file-path: |
-            ./version.txt
-            ./helm/helm.yml
+            version.txt
+            helm/helm.yml
           commit-msg: Update version and helm
           github-token: ${{ secrets.GITHUB_TOKEN }}
           branch: feat/cicd
