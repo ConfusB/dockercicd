@@ -23,10 +23,10 @@ jobs:
         run: |
             echo "tag=$(cat ./version.txt)" >> $GITHUB_ENV
       
-      - name: Update
-        run: ./scripts/fetch-resources.sh
+      - name: Update Version and tag
+        run: ./scripts/update_version.sh
       
-      - name: Update resources
+      - name: Update git
         uses: test-room-7/action-update-file@v1
         with:
           file-path: |
