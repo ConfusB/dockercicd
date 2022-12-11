@@ -9,11 +9,8 @@ COPY ./scripts/hello.py .
 COPY ./scripts/requirements.txt .
 COPY version.txt .
 
-# Install any necessary dependencies for the script
-RUN pip install -r requirements.txt
-
 # Create a second stage for the final image, starting from a lightweight base image
-FROM python:3.8-slim
+FROM python:alpine3.8
 
 # Copy the application code and dependencies from the build stage
 COPY --from=build /app /app
@@ -21,5 +18,8 @@ COPY --from=build /app /app
 # Set the working directory to the app directory
 WORKDIR /app
 
+RUN pip install -r requirements.txt
+
 # Set the entrypoint for the container to the Python script
+EXPOSE 8081
 ENTRYPOINT ["python", "hello.py"]
