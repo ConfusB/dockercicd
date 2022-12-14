@@ -8,4 +8,4 @@ echo $NEW_VER
 echo $NEW_VER > version.txt 
 
 # Set helm image
-yq e -i ".values.image.tag=$NEW_VER" ./helm/hello-python/values.yaml
+yq e -i ".image.tag=$NEW_VER" ./helm/hello-python/values.yaml
