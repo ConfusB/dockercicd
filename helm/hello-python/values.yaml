@@ -6,7 +6,7 @@ image:
   repository: ghcr.io/confusb/hello-python
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 2
+  tag: 6
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -58,6 +58,3 @@ autoscaling:
 nodeSelector: {}
 tolerations: []
 affinity: {}
-values:
-  image:
-    tag: 5
