@@ -17,8 +17,17 @@ chmod 700 get_helm.sh
 kubectl create secret docker-registry ghcr-login-secret --docker-server=https://ghcr.io --docker-username=$YOUR_GITHUB_USERNAME --docker-password=$YOUR_GITHUB_TOKEN --docker-email=$YOUR_EMAIL
 
 ## install helm chart
-helm install happy-panda bitnami/wordpress
 helm upgrade -i hello-python ./helm/hello-python --values ./helm/hello-python/values.yaml
 
 ## Check if running
 kubectl  get po -n=default
+
+
+## Create ArgoCD
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl get all -n argocd
+
+### Get Admin secrets
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+kubectl port-forward svc/argocd-server -n argocd 8080:443

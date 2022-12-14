@@ -1,0 +1,37 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: hello-python2
+  name: hello-python2
+  namespace: hello-python2
+spec:
+  type: NodePort
+  ports:
+  - port: 8081
+    protocol: TCP
+    targetPort: 8081
+  selector:
+    app: hello-python2
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-python2-app
+  namespace: hello-python2
+spec:
+  destination:
+    namespace: hello-python2
+    server: https://kubernetes.default.svc 
+  project: default 
+  source: 
+    path: argocd/
+    repoURL: https://github.com/ConfusB/dockercicd
+    targetRevision: minikube
+  syncPolicy: 
+    automated:
+      prune: true
+      selfHeal: false
+    syncOptions:
+    - CreateNamespace=true
